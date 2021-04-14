@@ -59,6 +59,7 @@ The name of the application is not important, I just called it "Python tutorial"
 - [SpareBank 1 Hallingdal Valdres](https://www.sparebank1.no/hallingdal/nettbank-privat/personlig-klient)
 - [SpareBank 1 Lom og Skjåk](https://www.sparebank1.no/lom-skjaak/nettbank-privat/personlig-klient)
 - [SpareBank 1 Gudbrandsdalen](https://www.sparebank1.no/gudbrandsdal/nettbank-privat/personlig-klient)
+- [SpareBank 1 Helgeland](https://www.sparebank1.no/helgeland/nettbank-privat/personlig-klient)
 - [SpareBank 1 Nordvest](https://www.sparebank1.no/nordvest/nettbank-privat/personlig-klient)
 - [SpareBank 1 Modum](https://www.sparebank1.no/modum/nettbank-privat/personlig-klient)
 - [SpareBank 1 BV](https://www.sparebank1.no/bv/nettbank-privat/personlig-klient)

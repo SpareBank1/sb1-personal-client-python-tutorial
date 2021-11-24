@@ -196,7 +196,7 @@ print("</html>")
 ---
 **IMPORTANT**
 
-At this point it is prudent to remind you that the oAuth token is your personal, long lived, key to your bank accounts. It can be used to access your account information, and to transfer money from your account. Keep it safe! If you fear it may have been compromised; immediately go to the registration link for your bank (provwided above) and delete the application access.
+At this point it is prudent to remind you that the oAuth token is your personal, long lived, key to your bank accounts. It can be used to access your account information, and to transfer money from your account. Keep it safe! If you fear it may have been compromised; immediately go to the registration link for your bank (provided above) and delete the application access.
 
 ---
 

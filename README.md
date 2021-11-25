@@ -6,7 +6,7 @@ The SpareBank 1 Open APIs for personal clients use oAuth Authorization Code Flow
 
 The script has been created based on the documentation here: https://developersparebank1.no/personlig-klient
 
-We are creating a script that works with production data, meaning your actual bank accounts. We do not use any APIs that modifies your accounts or transfer any money in this tutorial, we only retrieve information. It is possible to create applications that use sandbox data. For more information visit https://developersparebank1.no
+We are creating a script that works with production data, meaning your actual bank accounts. We do not use any APIs that modifies your accounts or transfer any money in this tutorial, we only retrieve information. For more information visit https://developersparebank1.no
 
 Each step can be found as a separate python file under `cgi-bin`
 

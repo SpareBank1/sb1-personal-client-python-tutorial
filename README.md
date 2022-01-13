@@ -4,9 +4,9 @@ This tutorial gets you up and running with a simple Python based client for the 
 
 The SpareBank 1 Open APIs for personal clients use oAuth Authorization Code Flow to authenticate (RFC 6749, 4.1), and the authorization code is provided after a bankID authentication. The authorization code is then exchanged for an oAuth token, that can be used to access the APIs
 
-The script has been created based on the documentation here: https://developersparebank1.no/personlig-klient
+The script has been created based on the documentation here: https://developer.sparebank1.no/#/documentation/gettingstarted
 
-We are creating a script that works with production data, meaning your actual bank accounts. We do not use any APIs that modifies your accounts or transfer any money in this tutorial, we only retrieve information. For more information visit https://developersparebank1.no
+We are creating a script that works with production data, meaning your actual bank accounts. We do not use any APIs that modifies your accounts or transfer any money in this tutorial, we only retrieve information. For more information visit https://developer.sparebank1.no
 
 Each step can be found as a separate python file under `cgi-bin`
 
@@ -47,25 +47,9 @@ The webserver use port 8000 by default, you can now point your browser to [http:
 
 ## Register your application
 
-Now you need to register your application for access, click on the link of your bank to register.
+Now you need to [log in](https://developer.sparebank1.no/#/login) to the developer portal to register your application for access,
 
 The name of the application is not important, I just called it "Python tutorial". The redirect URL must be the URL to your script. If you followed my instructions so far, it should be http://localhost:8000/cgi-bin/tutorial.py
-
-- [SpareBank 1 Østlandet](https://www.sparebank1.no/ostlandet/nettbank-privat/personlig-klient)
-- [SpareBank 1 Nord-Norge](https://www.sparebank1.no/nord-norge/nettbank-privat/personlig-klient)
-- [SpareBank 1 SR-bank ASA](https://www.sparebank1.no/sr-bank/nettbank-privat/personlig-klient)
-- [SpareBank 1 SMN](https://www.sparebank1.no/smn/nettbank-privat/personlig-klient)
-- [SpareBank 1 Telemark](https://www.sparebank1.no/telemark/nettbank-privat/personlig-klient)
-- [SpareBank 1 Hallingdal Valdres](https://www.sparebank1.no/hallingdal/nettbank-privat/personlig-klient)
-- [SpareBank 1 Lom og Skjåk](https://www.sparebank1.no/lom-skjaak/nettbank-privat/personlig-klient)
-- [SpareBank 1 Gudbrandsdalen](https://www.sparebank1.no/gudbrandsdal/nettbank-privat/personlig-klient)
-- [SpareBank 1 Helgeland](https://www.sparebank1.no/helgeland/nettbank-privat/personlig-klient)
-- [SpareBank 1 Nordvest](https://www.sparebank1.no/nordvest/nettbank-privat/personlig-klient)
-- [SpareBank 1 Modum](https://www.sparebank1.no/modum/nettbank-privat/personlig-klient)
-- [SpareBank 1 BV](https://www.sparebank1.no/bv/nettbank-privat/personlig-klient)
-- [SpareBank 1 Ringerike Hadeland](https://www.sparebank1.no/ringerike-hadeland/nettbank-privat/personlig-klient)
-- [SpareBank 1 Søre Sunnmøre](https://www.sparebank1.no/sore-sunnmore/nettbank-privat/personlig-klient)
-- [SpareBank 1 Østfold Akershus](https://www.sparebank1.no/ostfold-akershus/nettbank-privat/personlig-klient)
 
 Note down `client_id`, `client_secret` and `fid`
 
@@ -291,7 +275,7 @@ if ( authorization_code and not access_token ):
 
 if ( access_token ):
     api_call_headers = {'Authorization': 'Bearer ' + access_token}
-    api_call_response = requests.get('https://api.sparebank1.no/open/personal/banking/accounts/default', headers=api_call_headers, verify=False)
+    api_call_response = requests.get('https://api.sparebank1.no/personal/banking/accounts/default', headers=api_call_headers, verify=False)
 
     if( api_call_response.text == 'Unauthorized'):
         access_token = ''
@@ -321,6 +305,6 @@ print("</html>")
 Hey, you made it. Now you can test our open APIs for Personal Client. 
 
 You can find the documentation for the APIs here: 
-[Account API](https://developersparebank1.no/component/apiportal/?view=apitester&usage=api&tab=tests&apiName=PM%20Accounts&apiId=21670ee3-3524-47bd-b450-690c9c23b0de&menuId=147&managerId=1&apiVersion=1.4.0) and [Transfer API](https://developersparebank1.no/component/apiportal/?view=apitester&usage=api&tab=tests&apiName=PM%20Transfer&apiId=a284535f-2fe3-49a3-9248-e6f2ed20b2e2&menuId=147&managerId=1&apiVersion=1.3.0-release_1.3.0_0002)
+[Account API](https://developer.sparebank1.no/#/api/2682DF86994D4B348363BE9AC4644EFC), [Transactions API](https://developer.sparebank1.no/#/api/9858DA06FBC842699E8E73B280DAF422) and [Transfer API](https://developer.sparebank1.no/#/api/AE260B846C7C43728DFCEC6BC59D25BE)
 
-Remember this is just a tutorial to help you get started, and it is not a well written Python appllication. However for any feedback or bugs feel free to contact developer@sparebank1.no
+Remember this is just a tutorial to help you get started, and it is not a well written Python appllication. However for any feedback or bugs feel free to contact apideveloper@sparebank1.no

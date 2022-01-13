@@ -1,6 +1,6 @@
 # Start using SpareBank 1 Personal Client with Python
 
-This tutorial gets you up and running with a simple Python based client for the SpareBank 1 Open APIs for personal clients. The script is just a demonstration, or a foundation for you to use. It assumes everything goes as planned, no error handling or testing is included.
+This tutorial gets you up and running with a simple Python based client for the SpareBank 1 Open APIs for personal clients. The script is just a demonstration, or a foundation for you to use. It assumes everything goes as planned, no error handling or testing is included
 
 The SpareBank 1 Open APIs for personal clients use oAuth Authorization Code Flow to authenticate (RFC 6749, 4.1), and the authorization code is provided after a bankID authentication. The authorization code is then exchanged for an oAuth token, that can be used to access the APIs
 
@@ -47,7 +47,7 @@ The webserver use port 8000 by default, you can now point your browser to [http:
 
 ## Register your application
 
-Now you need to [log in](https://developer.sparebank1.no/#/login) to the developer portal to register your application for access,
+Now you need to [log in](https://developer.sparebank1.no/#/login) to the developer portal to register your application for access
 
 The name of the application is not important, I just called it "Python tutorial". The redirect URL must be the URL to your script. If you followed my instructions so far, it should be http://localhost:8000/cgi-bin/tutorial.py
 

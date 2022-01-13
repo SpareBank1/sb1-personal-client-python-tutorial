@@ -29,7 +29,7 @@ if ( authorization_code and not access_token ):
 
 if ( access_token ):
     api_call_headers = {'Authorization': 'Bearer ' + access_token}
-    api_call_response = requests.get('https://api.sparebank1.no/open/personal/banking/accounts/default', headers=api_call_headers, verify=False)
+    api_call_response = requests.get('https://api.sparebank1.no/personal/banking/accounts/default', headers=api_call_headers, verify=False)
 
     if( api_call_response.text == 'Unauthorized'):
         access_token = ''

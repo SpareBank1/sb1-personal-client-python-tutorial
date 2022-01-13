@@ -1,6 +1,6 @@
-# Start using SpareBank 1 Personal Client with Python.
+# Start using SpareBank 1 Personal Client with Python
 
-This tutorial gets you up and running with a simple Python based client for the SpareBank 1 Open APIs for personal clients. The script is just a demonstration, or a foundation for you to use. It assumes everything goes as planned, no error handling or testing is included. 
+This tutorial gets you up and running with a simple Python based client for the SpareBank 1 Open APIs for personal clients. The script is just a demonstration, or a foundation for you to use. It assumes everything goes as planned, no error handling or testing is included.
 
 The SpareBank 1 Open APIs for personal clients use oAuth Authorization Code Flow to authenticate (RFC 6749, 4.1), and the authorization code is provided after a bankID authentication. The authorization code is then exchanged for an oAuth token, that can be used to access the APIs
 
@@ -12,12 +12,12 @@ Each step can be found as a separate python file under `cgi-bin`
 
 Have fun!
 
-We assume that you have an up to date Python environment running.
+We assume that you have an up to date Python environment running
 
 ## Set up a webserver
 We need a local web server that is allowed to run python scripts. An easy solution is to use the CGIHTTPServer module.
 
-We create a new project folder "OpenAPIPythonTutorial" and in this folder we create a script folder "cgi-bin" this is the default script folder name for the CGIHTTPServer module.
+We create a new project folder "OpenAPIPythonTutorial" and in this folder we create a script folder "cgi-bin" this is the default script folder name for the CGIHTTPServer module
 
 Create a file in the "cgi-bin" folder: "tutorial.py"
 
@@ -55,9 +55,9 @@ Note down `client_id`, `client_secret` and `fid`
 
 ## Create a authorization link 
 
-Modify "tutorial.py", as follows, and replace `<< client_id >>` and `<< client_secret >>` with the data you got from registration of your app. You may also add financial institution (`<< fid >>`), this is optional, but it improves the authorization step later.
+Modify "tutorial.py", as follows, and replace `<< client_id >>` and `<< client_secret >>` with the data you got from registration of your app. You may also add financial institution (`<< fid >>`), this is optional, but it improves the authorization step later
 
-This script creates the authorization link, used to take you to the login system of SpareBank 1 and return the authorization code.
+This script creates the authorization link, used to take you to the login system of SpareBank 1 and return the authorization code
 
 ```python
 #!/usr/bin/env python3.7
@@ -85,11 +85,11 @@ print("</body>")
 print("</html>")
 ```
 
-You can now go to http://localhost:8000/cgi-bin/tutorial.py again and refresh, the link should take you to the bank selector and login procedure. The script is not yet set up to handle the next step after login, so, no need to go through the process. 
+You can now go to http://localhost:8000/cgi-bin/tutorial.py again and refresh, the link should take you to the bank selector and login procedure. The script is not yet set up to handle the next step after login, so, no need to go through the process
 
 ## Handle redirect with authentication code
 
-When you later go through with the login, you will get an authentication code back to your script. The redirect URL is used to reach your script, and a http get parameter named "code" is added, we need to modify the script to handle that.
+When you later go through with the login, you will get an authentication code back to your script. The redirect URL is used to reach your script, and a http get parameter named "code" is added, we need to modify the script to handle that
 
 
 ```python
@@ -130,7 +130,7 @@ You can now go to http://localhost:8000/cgi-bin/tutorial.py again and complete t
 
 ## Exchange the authentication code for an oAuth Token
 
-Now that we have the functionality to get the authentication code, we will modify the script to exchange it for an oAuth token. We do that by introducing the "token_uri" in the script. We call this, and get a json document back, that contains the oAuth token.
+Now that we have the functionality to get the authentication code, we will modify the script to exchange it for an oAuth token. We do that by introducing the "token_uri" in the script. We call this, and get a json document back, that contains the oAuth token
 
 
 ```python
@@ -180,13 +180,13 @@ print("</html>")
 ---
 **IMPORTANT**
 
-At this point it is prudent to remind you that the oAuth token is your personal, long lived, key to your bank accounts. It can be used to access your account information, and to transfer money from your account. Keep it safe! If you fear it may have been compromised; immediately go to the registration link for your bank (provided above) and delete the application access.
+At this point it is prudent to remind you that the oAuth token is your personal, long lived, key to your bank accounts. It can be used to access your account information, and to transfer money from your account. Keep it safe! If you fear it may have been compromised; immediately go to the registration link for your bank (provided above) and delete the application access
 
 ---
 
 ## Save the token
 
-We have successfully managed to get a token, this token is valid for 6 months, we want to keep it and re-use it. I have a well-protected computer with an encrypted drive, so I choose to use python shelve for simplicity. You might want to save it to your operating system keychain or similar. Now, let's modify the script to save the token, and reuse the token if possible.
+We have successfully managed to get a token, this token is valid for 6 months, we want to keep it and re-use it. I have a well-protected computer with an encrypted drive, so I choose to use python shelve for simplicity. You might want to save it to your operating system keychain or similar. Now, let's modify the script to save the token, and reuse the token if possible
 
 
 ```python
@@ -241,7 +241,7 @@ print("</html>")
 
 ## Get account information
 
-Now finally we have the token we can use, and its time to try to get some data. We will try to call `https://api.sparebank1.no/open/personal/banking/accounts/default`. It will return a json document with information about your default account. If the call returns `Unauthorized` the script will try to go through the process of getting the key again.
+Now finally we have the token we can use, and its time to try to get some data. We will try to call `https://api.sparebank1.no/open/personal/banking/accounts/default`. It will return a json document with information about your default account. If the call returns `Unauthorized` the script will try to go through the process of getting the key again
 
 ```python
 #!/usr/bin/env python3.7
@@ -302,7 +302,7 @@ print("</html>")
 
 ## What now?
 
-Hey, you made it. Now you can test our open APIs for Personal Client. 
+Hey, you made it. Now you can test our open APIs for Personal Client
 
 You can find the documentation for the APIs here: 
 [Account API](https://developer.sparebank1.no/#/api/2682DF86994D4B348363BE9AC4644EFC), [Transactions API](https://developer.sparebank1.no/#/api/9858DA06FBC842699E8E73B280DAF422) and [Transfer API](https://developer.sparebank1.no/#/api/AE260B846C7C43728DFCEC6BC59D25BE)

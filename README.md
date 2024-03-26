@@ -40,8 +40,9 @@ Save the file and make it executable
     `chmod +x cgi-bin/tutorial.py`
 
 Start the webserver
-
     `python -m CGIHTTPServer`
+Depending on your python version and config you might need to use `python3` instead of `python`
+You might also need to use `python -m http.server --cgi` instead of `python -m CGIHTTPServer`
 
 The webserver use port 8000 by default, you can now point your browser to [http://localhost:8000/cgi-bin/tutorial.py](http://localhost:8000/cgi-bin/tutorial.py)
 
@@ -62,18 +63,20 @@ This script creates the authorization link, used to take you to the login system
 ```python
 #!/usr/bin/env python3.7
 
+import uuid
+
 client_id = '<< client_id >>'
 client_secret = '<< client_secret >>'
 fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial.py"
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
 
 content = '<a href=' +  authorize_uri + \
     '?response_type=code&client_id=' + client_id + \
     '&redirect_uri=' + redirect_uri + \
     '&finInst=' + fid + \
-    '&state=state' + \
+    '&state=' + str(uuid.uuid4()) + \
     '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
@@ -95,6 +98,7 @@ When you later go through with the login, you will get an authentication code ba
 ```python
 #!/usr/bin/env python3.7
 
+import uuid
 import cgi
 
 form = cgi.FieldStorage()
@@ -105,7 +109,7 @@ client_secret = '<< client_secret >>'
 fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial.py"
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
 
 if (authorization_code):
     content = "Got the code: " + authorization_code
@@ -114,7 +118,7 @@ else:
         '?response_type=code&client_id=' + client_id + \
         '&redirect_uri=' + redirect_uri + \
         '&finInst=' + fid + \
-        '&state=state' + \
+        '&state=' + str(uuid.uuid4()) + \
         '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
@@ -136,6 +140,7 @@ Now that we have the functionality to get the authentication code, we will modif
 ```python
 #!/usr/bin/env python3.7
 
+import uuid
 import cgi
 import requests, json
 
@@ -148,8 +153,8 @@ fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial.py"
 
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
-token_uri = "https://api.sparebank1.no/oauth/token"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
+token_uri = "https://api-auth.sparebank1.no/oauth/token"
 
 if (authorization_code):
     data = {'grant_type': 'authorization_code', 'code': authorization_code, 'redirect_uri': redirect_uri}
@@ -164,7 +169,7 @@ else:
         '?response_type=code&client_id=' + client_id + \
         '&redirect_uri=' + redirect_uri + \
         '&finInst=' + fid + \
-        '&state=state' + \
+        '&state=' + str(uuid.uuid4()) + \
         '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
@@ -186,12 +191,12 @@ At this point it is prudent to remind you that the oAuth token is your personal,
 
 ## Save the token
 
-We have successfully managed to get a token, this token is valid for 6 months, we want to keep it and re-use it. I have a well-protected computer with an encrypted drive, so I choose to use python shelve for simplicity. You might want to save it to your operating system keychain or similar. Now, let's modify the script to save the token, and reuse the token if possible
-
+We have successfully managed to get a token. The access-token token is valid for 10 minutes. In this example we choose to use python shelve to store the token for simplicity. You might want to save it to your operating system keychain or similar. Now, let's modify the script to save the token, and reuse the token if possible
 
 ```python
 #!/usr/bin/env python3.7
 
+import uuid
 import cgi
 import requests, json
 import shelve
@@ -208,8 +213,8 @@ fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial.py"
 
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
-token_uri = "https://api.sparebank1.no/oauth/token"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
+token_uri = "https://api-auth.sparebank1.no/oauth/token"
 
 if ( authorization_code ):
     data = {'grant_type': 'authorization_code', 'code': authorization_code, 'redirect_uri': redirect_uri}
@@ -227,7 +232,7 @@ if ( not access_token ):
         '?response_type=code&client_id=' + client_id + \
         '&redirect_uri=' + redirect_uri + \
         '&finInst=' + fid + \
-        '&state=state' + \
+        '&state=' + str(uuid.uuid4()) + \
         '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
@@ -241,11 +246,12 @@ print("</html>")
 
 ## Get account information
 
-Now finally we have the token we can use, and its time to try to get some data. We will try to call `https://api.sparebank1.no/open/personal/banking/accounts/default`. It will return a json document with information about your default account. If the call returns `Unauthorized` the script will try to go through the process of getting the key again
+Now finally we have the token we can use, and its time to try to get some data. We will try to call `https://api.sparebank1.no/personal/banking/accounts/default`. It will return a json document with information about your default account. If the call returns `Unauthorized` the script will try to go through the process of getting the key again
 
 ```python
 #!/usr/bin/env python3.7
 
+import uuid
 import cgi
 import requests, json
 import shelve
@@ -262,8 +268,8 @@ fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial_5.py"
 
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
-token_uri = "https://api.sparebank1.no/oauth/token"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
+token_uri = "https://api-auth.sparebank1.no/oauth/token"
 
 if ( authorization_code and not access_token ):
     data = {'grant_type': 'authorization_code', 'code': authorization_code, 'redirect_uri': redirect_uri}
@@ -281,14 +287,14 @@ if ( access_token ):
         access_token = ''
     else: 
         response = json.loads(api_call_response.text)
-        content = 'Acount owner: ' + response['owner']['name']
+        content = 'Account owner: ' + response['owner']['name']
 
 if ( not access_token ):
     content = '<a href=' +  authorize_uri + \
         '?response_type=code&client_id=' + client_id + \
         '&redirect_uri=' + redirect_uri + \
         '&finInst=' + fid + \
-        '&state=state' + \
+        '&state=' + str(uuid.uuid4()) + \
         '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
@@ -300,6 +306,9 @@ print("</body>")
 print("</html>")
 ```
 
+## Refresh token
+An alternative to the above is to implement use of refresh token to get a new access token. The refresh token is valid for 30 days, and can be used to get a new access token. The refresh token is used in the same way as the access token, but with the grant_type set to refresh_token
+
 ## What now?
 
 Hey, you made it. Now you can test our open APIs for Personal Client
@@ -307,4 +316,4 @@ Hey, you made it. Now you can test our open APIs for Personal Client
 You can find the documentation for the APIs here: 
 [Account API](https://developer.sparebank1.no/#/api/2682DF86994D4B348363BE9AC4644EFC), [Transactions API](https://developer.sparebank1.no/#/api/9858DA06FBC842699E8E73B280DAF422) and [Transfer API](https://developer.sparebank1.no/#/api/AE260B846C7C43728DFCEC6BC59D25BE)
 
-Remember this is just a tutorial to help you get started, and it is not a well written Python appllication. However for any feedback or bugs feel free to contact apideveloper@sparebank1.no
+Remember this is just a tutorial to help you get started, and it is not a well written Python application. However for any feedback or bugs feel free to contact apideveloper@sparebank1.no

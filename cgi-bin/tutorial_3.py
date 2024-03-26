@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.7
 
+import uuid
 import cgi
 import requests, json
 
@@ -12,8 +13,8 @@ fid = '<< fid >>'
 
 redirect_uri = "http://localhost:8000/cgi-bin/tutorial_3.py"
 
-authorize_uri = "https://api.sparebank1.no/oauth/authorize"
-token_uri = "https://api.sparebank1.no/oauth/token"
+authorize_uri = "https://api-auth.sparebank1.no/oauth/authorize"
+token_uri = "https://api-auth.sparebank1.no/oauth/token"
 
 if ( authorization_code ):
     data = {'grant_type': 'authorization_code', 'code': authorization_code, 'redirect_uri': redirect_uri}
@@ -28,7 +29,7 @@ else:
         '?response_type=code&client_id=' + client_id + \
         '&redirect_uri=' + redirect_uri + \
         '&finInst=' + fid + \
-        '&state=state' + \
+        '&state=' + str(uuid.uuid4()) + \
         '>Login</a>'
 
 print("Content-type:text/html;charset=utf-8\r\n\r\n")
